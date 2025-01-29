@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Sighting } from '../models/sighting';
+import { SightingsService } from '../services/sightings.service';
 
 @Component({
   selector: 'app-tab1',
@@ -8,6 +10,15 @@ import { Component } from '@angular/core';
 })
 export class Tab1Page {
 
-  constructor() {}
+  public sighting? : Sighting;
+
+  constructor(private sightingService: SightingsService) {
+
+  }
+  ngOnInit() {
+    //console.log(this.sightingService.getLatest())
+    this.sighting = this.sightingService.getLatest()
+  }
+  
 
 }
