@@ -23,7 +23,7 @@
       <ion-list>
         <ion-item *ngFor="let sight1 of sightingsWeek">
           <ion-thumbnail slot="start">
-            <img alt="A photo" src="sight1!.photo" />
+            <img alt="A photo" [src]="sight1.photo" />
           </ion-thumbnail>
           <ion-label>{{ sight1!.date | date:'HH:mm dd/MM/yyyy' }}</ion-label>
         </ion-item>
@@ -39,7 +39,7 @@
     <ion-card-content>
       <ion-item *ngFor="let sight2 of sightingsAll">
         <ion-thumbnail slot="start">
-          <img alt="A photo" src="sight2!.photo" />
+          <img alt="A photo" [src]="sight2.photo" />
         </ion-thumbnail>
         <ion-label>{{ sight2!.date | date:'HH:mm dd/MM/yyyy' }}</ion-label>
       </ion-item>

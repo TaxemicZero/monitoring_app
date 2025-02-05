@@ -1,31 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Sighting } from '../models/sighting';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SightingsService {
 
-  public sightings: Sighting[]
+  public sightings: Sighting[] = [];
 
-  constructor() {
-    this.sightings = [
-      {
-        id: 1,
-        photo: "../server/images/rat_1.png",
-        date: new Date("2024-12-22T09:00:00")
-        },
-      {
-      id: 2,
-      photo: "../../server/images/rat_1.png",
-      date: new Date("2025-01-22T17:00:00")
-      },
-      {
-        id: 3,
-        photo: "../../../server/images/rat_1.png",
-        date: new Date("2025-01-27T12:30:00")
-      }
-  ];
+  constructor(private httpClient: HttpClient) {
+
    }
 
    isThisWeek (date: Date) {
@@ -45,38 +32,55 @@ export class SightingsService {
     return (date >= startOfThisWeek) && (date < startOfNextWeek);
   }
 
-
+  /*
   public getAll() : Sighting[] {
     return this.sightings
   }
+  */
+  public getAll() : Observable<Sighting[]> {
+    return this.httpClient.get(`${environment.baseUrl}/mocks/sightings`) as Observable<Sighting[]>;
+  }
+
 
   public getLatest() : Sighting | undefined {
-    let sightCopy : Sighting[] = [];
-    this.sightings.forEach(sight => {
-      sightCopy.push(sight)
-      
-    });
+    var sightCopy : Sighting[] = [];
+    this.getAll().subscribe(results => sightCopy = results);
 
     sightCopy.sort((a,b) => a.id - b.id);
     return sightCopy.pop()
   }
 
-  public getSpecific(id: number) : Sighting | undefined{
-    return this.sightings.find(a => a.id == id)
-  }
-
   public getThisWeek() : Sighting[] {
-    let sightList : Sighting[] = [];
+    var sightCopy : Sighting[] = [];
+    var sightResult : Sighting[] = [];
+    this.getAll().subscribe(results => sightCopy = results);
 
-    this.sightings.forEach(sight => {
+    sightCopy.forEach(sight => {
       //console.log(this.isThisWeek(sight.date))
       //console.log(sight)
       if (this.isThisWeek(sight.date)) {
-        sightList.push(sight);
+        sightResult.push(sight);
       }
     });
     console.log("array in service " + this.sightings);
-    return sightList;
+    return sightResult;
   }
+
+ /*
+ public getThisWeek() : Observable<Sighting[]> {
+    return this.httpClient.get(`${environment.baseUrl}/mocks/sightings/week`) as Observable<Sighting[]>;
+  }
+  public getLatest() : Observable<Sighting>{
+    return this.httpClient.get(`${environment.baseUrl}/mocks/sightings/last`) as Observable<Sighting>;
+  }
+  */
+  public getSpecific(id: number) : Observable<Sighting>{
+    return this.httpClient.get(`${environment.baseUrl}/mocks/sightings/${id}`) as Observable<Sighting>;
+  }
+
+  
+
+
+  
   
 }

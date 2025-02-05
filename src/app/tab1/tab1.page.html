@@ -16,12 +16,12 @@
   <ion-card>
     
     <ion-card-header>
-      <ion-card-title>Latest sighting - {{ sighting!.date | date:'HH:mm dd/MM/yyyy' }} </ion-card-title>
+      <ion-card-title>Latest sighting - {{ sighting?.date | date:'HH:mm dd/MM/yyyy' }} </ion-card-title>
       <ion-card-subtitle id="Time_home"></ion-card-subtitle>
     </ion-card-header>
   
     <ion-card-content>
-      <img [src]="sighting!.photo" alt="Image"  />
+      <img [src]="sighting?.photo" alt="Image"  />
       
     </ion-card-content>
   </ion-card>
